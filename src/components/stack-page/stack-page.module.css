@@ -1,0 +1,47 @@
+.stack_page {
+    width: 829px;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.stack_container {
+    margin-top: 100px;
+    display: flex;
+    justify-content: space-between;
+    gap: 100px;
+    
+}
+
+.input_container {
+    width: 630px;
+    display: flex;
+    gap: 12px;
+}
+
+.input_display {
+    display: flex;
+    gap: 12px
+}
+.text_display {
+    width: 100%;
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    align-items: center;
+}
+
+.top_item {
+    margin: 0;
+    padding: 0;
+    padding-bottom: 5px;
+    margin-top: -20px;
+}
+
+.char_index {
+    margin: 0;
+    padding: 0;
+    padding-top: 10px;
+}

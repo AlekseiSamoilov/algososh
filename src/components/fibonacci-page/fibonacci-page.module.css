@@ -1,0 +1,34 @@
+.string_container {
+    margin-top: 100px;
+    display: flex;
+    position: absolute;
+    flex-direction: column;
+    top: 43%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    align-items: center;
+    gap: 100px;
+    
+}
+
+.input_container {
+    width: 377px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    
+}
+
+.input_display {
+    display: flex;
+    gap: 12px;
+    
+}
+.text_display {
+    max-width: 800px;
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    height: 80px;
+}
+
