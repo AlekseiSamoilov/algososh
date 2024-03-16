@@ -1,28 +1,28 @@
 class Stack<T> {
-    private items: T[] = [];
+  private items: T[] = [];
 
-    constructor() {
-        this.items = [];
-    }
+  constructor() {
+    this.items = [];
+  }
 
-    push(item: T): void {
-        this.items.push(item);
-    }
+  push(item: T): void {
+    this.items.push(item);
+  }
 
-    pop(): T | undefined {
-       return this.items.pop();
-    }
-    clear(): void {
-       this.items= [];
-    }
+  pop(): T | undefined {
+    return this.items.pop();
+  }
+  clear(): void {
+    this.items = [];
+  }
 
-    isEmpty(): boolean {
-        return this.items.length === 0;
-    }
+  isEmpty(): boolean {
+    return this.items.length === 0;
+  }
 
-    getItems(): T[] {
-        return this.items;
-    }
+  getItems(): T[] {
+    return this.items;
+  }
 }
 
 export default Stack;
