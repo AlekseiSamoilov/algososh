@@ -2,7 +2,7 @@
   text-align: center;
 }
 
-.btns_box {
+/* .btns_box {
   display: grid;
   grid-template-areas:
     "btn1 btn2"
@@ -11,13 +11,13 @@
   grid-template-columns: auto auto;
   gap: 12px;
   max-width: 362px;
-}
+} */
 
-.btn1 {
+/* .btn1 {
   grid-area: btn1;
-}
+} */
 
-.btn2 {
+/* .btn2 {
   grid-area: btn2;
 }
 
@@ -29,4 +29,4 @@
   display: flex;
   align-items: center;
   gap: 5px;
-}
+} */
