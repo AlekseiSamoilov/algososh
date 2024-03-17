@@ -22,7 +22,7 @@ export const FibonacciPage: React.FC = () => {
     const newString: string = e.target.value;
     const newValue: number | undefined = parseInt(newString, 10);
     setInputValue(newValue);
-    if (newValue > 19) {
+    if (newValue > 19 || newValue <= 0) {
       setIsDeactivated(true);
     } else {
       setIsDeactivated(false);
@@ -43,6 +43,7 @@ export const FibonacciPage: React.FC = () => {
       setNumbers([...newArr]);
       if (i === n - 1) {
         setIsLoading(false);
+        setInputValue(undefined);
       }
     }
   };
@@ -57,7 +58,7 @@ export const FibonacciPage: React.FC = () => {
               max={19}
               isLimitText={true}
               onChange={handleInputChange}
-              value={inputValue}
+              value={inputValue || 0}
             />
           </div>
           <Button
