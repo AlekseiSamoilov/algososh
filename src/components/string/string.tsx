@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 import { Input } from "../ui/input/input";
 import style from "./string.module.css";
@@ -16,6 +16,14 @@ export const StringComponent: React.FC = () => {
   const [inputText, setInputText] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [chars, setChars] = useState<ICharState[]>([]);
+
+  const isMounted = useRef<boolean>(true);
+
+  useEffect(() => {
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!isLoading) {
@@ -48,30 +56,45 @@ export const StringComponent: React.FC = () => {
         if (start === end) {
           newChars[start].state = ElementStates.Modified;
         }
-        setChars([...newChars]);
-        setIsLoading(false);
+        if (isMounted.current) {
+          setChars([...newChars]);
+          setIsLoading(false);
+        }
+
         return;
       }
 
       newChars[start].state = ElementStates.Changing;
       newChars[end].state = ElementStates.Changing;
-      setChars([...newChars]);
+      if (isMounted.current) {
+        setChars([...newChars]);
+      }
       await delay(DELAY_IN_MS);
       startSwap(start, end);
-      setChars([...newChars]);
+      if (isMounted.current) {
+        setChars([...newChars]);
+      }
       await delay(DELAY_IN_MS);
       animateSwap(start + 1, end - 1);
     };
 
     animateSwap(0, newChars.length - 1);
-    setInputText("");
+    if (isMounted.current) {
+      setInputText("");
+    }
   };
+
+  useEffect(() => {
+    console.log("Chars state updated:", chars);
+  }, [chars]);
+
   return (
     <SolutionLayout title="Строка">
       <div className={style.string_container}>
         <div className={style.input_display}>
           <div className={style.input_container}>
             <Input
+              data-testid="string-input"
               type="text"
               maxLength={11}
               isLimitText={true}
@@ -80,6 +103,7 @@ export const StringComponent: React.FC = () => {
             />
           </div>
           <Button
+            data-testid="reverse-button"
             text="Развернуть"
             type="button"
             disabled={inputText === ""}
@@ -87,9 +111,14 @@ export const StringComponent: React.FC = () => {
             isLoader={isLoading}
           ></Button>
         </div>
-        <div className={style.text_display}>
+        <div data-testid={"chars"} className={style.text_display}>
           {chars.map((item, index) => (
-            <Circle key={index} letter={item.char} state={item.state} />
+            <Circle
+              data-testid={`circle-${index}`}
+              key={index}
+              letter={item.char}
+              state={item.state}
+            />
           ))}
         </div>
       </div>

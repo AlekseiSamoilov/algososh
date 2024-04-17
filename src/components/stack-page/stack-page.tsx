@@ -74,6 +74,7 @@ export const StackPage: React.FC = () => {
         <div className={style.stack_container}>
           <div className={style.input_container}>
             <Input
+              data-testid="stack-input"
               type="text"
               maxLength={4}
               isLimitText={true}
@@ -81,6 +82,7 @@ export const StackPage: React.FC = () => {
               onChange={inputData}
             />
             <Button
+              data-testid="stack-add"
               text="Добавить"
               type="button"
               onClick={hadnleAddChar}
@@ -90,6 +92,7 @@ export const StackPage: React.FC = () => {
               }
             />
             <Button
+              data-testid="stack-delete"
               text="Удалить"
               type="button"
               isLoader={isLoading === "delete"}
@@ -103,6 +106,7 @@ export const StackPage: React.FC = () => {
           </div>
           <div className={style.clear_button}>
             <Button
+              data-testid="stack-clear"
               text="Очистить"
               type="button"
               onClick={hadnleClearStack}

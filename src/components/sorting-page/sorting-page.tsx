@@ -5,6 +5,70 @@ import { RadioInput } from "../ui/radio-input/radio-input";
 import { Button } from "../ui/button/button";
 import { Direction } from "../../types/direction";
 import { DELAY_IN_MS, delay } from "../../constants/delays";
+import { ElementStates } from "../../types/element-states";
+import { Column } from "../ui/column/column";
+
+export const bubbleSort = async (
+  arr: number[],
+  direction: "По возрастанию" | "По убыванию" | null,
+  setCurrentIndexes: (indexes: number[]) => void,
+  setSortedIndexes: (callback: (prevIndexes: number[]) => number[]) => void,
+  setArray: (newArray: number[]) => void,
+  delay: (ms: number) => Promise<void>
+) => {
+  let n = arr.length;
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < n - i - 1; j++) {
+      setCurrentIndexes([j, j + 1]);
+      await delay(DELAY_IN_MS);
+      if (
+        direction === "По возрастанию"
+          ? arr[j] > arr[j + 1]
+          : arr[j] < arr[j + 1]
+      ) {
+        [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+        setArray([...arr]);
+        await delay(DELAY_IN_MS);
+      }
+    }
+    setSortedIndexes((prev: any) => [...prev, n - i - 1]);
+  }
+};
+
+export const selectionSort = async (
+  arr: number[],
+  direction: "По возрастанию" | "По убыванию" | null,
+  setCurrentIndexes: (index: number[]) => void,
+  setSortedIndexes: (callback: (prevIndex: number[]) => number[]) => void,
+  setArray: (newArray: number[]) => void,
+  delay: (ms: number) => Promise<void>
+) => {
+  let arrayLength = arr.length;
+  let finalSortedIndexes: number[] = [];
+
+  for (let i = 0; i < arrayLength - 1; i++) {
+    let minIndex = i;
+    for (let j = i + 1; j < arrayLength; j++) {
+      setCurrentIndexes([minIndex, j]);
+      await delay(DELAY_IN_MS);
+      if (
+        direction === "По возрастанию"
+          ? arr[j] < arr[minIndex]
+          : arr[j] > arr[minIndex]
+      ) {
+        minIndex = j;
+      }
+    }
+    if (minIndex !== i) {
+      [arr[i], arr[minIndex]] = [arr[minIndex], arr[i]];
+      setArray([...arr]);
+    }
+    finalSortedIndexes.push(i);
+    setSortedIndexes(() => [...finalSortedIndexes]);
+  }
+  finalSortedIndexes.push(arrayLength - 1);
+  setSortedIndexes(() => [...finalSortedIndexes]);
+};
 
 export const SortingPage: React.FC = () => {
   const [array, setArray] = useState<number[]>([]);
@@ -15,10 +79,13 @@ export const SortingPage: React.FC = () => {
   const [direction, setDirection] = useState<
     "По возрастанию" | "По убыванию" | null
   >(null);
+  // const [direction, setDirection] = useState<
+  //   "По возрастанию" | "По убыванию" | null
+  // >(null);
 
   const generateRandomArr = (
     minLength: number = 3,
-    maxLength: number = 17,
+    maxLength: number = 6,
     maxValue: number = 100
   ) => {
     const length =
@@ -39,18 +106,33 @@ export const SortingPage: React.FC = () => {
     setSortedIndexes([]);
   };
 
-  const handleSort = async (direction: "По возрастанию" | "По убыванию") => {
+  const handleSort = async (
+    direction: "По возрастанию" | "По убыванию" | null
+  ) => {
     setIsCalculating(true);
-    setDirection(direction);
-    setCurrentIndexes([]);
-    setSortedIndexes([]);
-    if (sortMethod === "Выбор") {
-      await selectionSort([...array], direction);
-    } else if (sortMethod === "Пузырёк") {
-      await bubbleSort([...array], direction);
+    if (sortMethod === "Пузырёк") {
+      setDirection(direction);
+      await bubbleSort(
+        [...array],
+        direction,
+        setCurrentIndexes,
+        setSortedIndexes,
+        setArray,
+        delay as (ms: number) => Promise<void>
+      );
+    } else if (sortMethod === "Выбор") {
+      setDirection(direction);
+      await selectionSort(
+        [...array],
+        direction,
+        setCurrentIndexes,
+        setSortedIndexes,
+        setArray,
+        delay as (ms: number) => Promise<void>
+      );
     }
-    setIsCalculating(false);
     setDirection(null);
+    setIsCalculating(false);
   };
 
   const handleNewArray = () => {
@@ -59,64 +141,6 @@ export const SortingPage: React.FC = () => {
     setArray(newArr);
     setCurrentIndexes([]);
     setSortedIndexes([]);
-  };
-
-  const bubbleSort = async (
-    arr: number[],
-    direction: "По возрастанию" | "По убыванию"
-  ) => {
-    let n = arr.length;
-    let change;
-    do {
-      change = false;
-      for (let i = 0; i < n - 1; i++) {
-        setCurrentIndexes([i, i + 1]);
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        if (
-          (direction === "По возрастанию" && arr[i] > arr[i + 1]) ||
-          (direction === "По убыванию" && arr[i] < arr[i + 1])
-        ) {
-          [arr[i], arr[i + 1]] = [arr[i + 1], arr[i]];
-          change = true;
-          setArray([...arr]);
-        }
-      }
-      setSortedIndexes((prev) => [...prev, n - 1]);
-      n--;
-    } while (change);
-    setSortedIndexes(Array.from(Array(arr.length).keys()));
-    setCurrentIndexes([]);
-  };
-
-  const selectionSort = async (
-    arr: number[],
-    direction: "По возрастанию" | "По убыванию"
-  ) => {
-    let n = arr.length;
-    for (let i = 0; i < n - 1; i++) {
-      let minIndex = i;
-      setSortedIndexes((prev) => [...prev, i]);
-      for (let j = i + 1; j < n; j++) {
-        setCurrentIndexes([minIndex, j]);
-        await delay(DELAY_IN_MS);
-        if (
-          direction === "По возрастанию"
-            ? arr[j] < arr[minIndex]
-            : arr[j] > arr[minIndex]
-        ) {
-          minIndex = j;
-        }
-      }
-      if (minIndex !== i) {
-        [arr[i], arr[minIndex]] = [arr[minIndex], arr[i]];
-        setArray([...arr]);
-        setSortedIndexes((prev) => [...prev, i]);
-      } else {
-        setSortedIndexes((prev) => [...prev, i]);
-      }
-    }
-    setCurrentIndexes([]);
-    setSortedIndexes(Array.from(Array(n).keys()));
   };
 
   return (
@@ -159,31 +183,91 @@ export const SortingPage: React.FC = () => {
         </div>
         <div className={style.array_container}>
           {array.map((value, index) => (
-            <div
+            <Column
               key={index}
-              style={{
-                margin: "0 4px",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <div
-                style={{
-                  height: `${(340 * value) / 100}px`,
-                  width: "50px",
-                  background: sortedIndexes.includes(index)
-                    ? "#7FE051"
-                    : currentIndexes.includes(index)
-                    ? "#D252E1"
-                    : "blue",
-                }}
-              ></div>
-              <span style={{ marginTop: "10px" }}>{value}</span>
-            </div>
+              index={value}
+              state={
+                sortedIndexes.includes(index)
+                  ? ElementStates.Modified
+                  : currentIndexes.includes(index)
+                  ? ElementStates.Changing
+                  : ElementStates.Default
+              }
+            />
           ))}
         </div>
       </div>
     </SolutionLayout>
   );
 };
+
+// const handleSort = async (direction: "По возрастанию" | "По убыванию") => {
+//   setIsCalculating(true);
+//   setDirection(direction);
+//   setCurrentIndexes([]);
+//   setSortedIndexes([]);
+//   if (sortMethod === "Выбор") {
+//     await selectionSort([...array], direction);
+//   } else if (sortMethod === "Пузырёк") {
+//     await bubbleSort([...array], direction);
+//   }
+//   setIsCalculating(false);
+//   setDirection(null);
+// };
+
+// const bubbleSort = async (
+//   arr: number[],
+//   direction: "По возрастанию" | "По убыванию"
+// ) => {
+//   let n = arr.length;
+//   let change;
+//   do {
+//     change = false;
+//     for (let i = 0; i < n - 1; i++) {
+//       setCurrentIndexes([i, i + 1]);
+//       await new Promise((resolve) => setTimeout(resolve, 1000));
+//       if (
+//         (direction === "По возрастанию" && arr[i] > arr[i + 1]) ||
+//         (direction === "По убыванию" && arr[i] < arr[i + 1])
+//       ) {
+//         [arr[i], arr[i + 1]] = [arr[i + 1], arr[i]];
+//         change = true;
+//         setArray([...arr]);
+//       }
+//     }
+//     setSortedIndexes((prev) => [...prev, n - 1]);
+//     n--;
+//   } while (change);
+//   setSortedIndexes(Array.from(Array(arr.length).keys()));
+//   setCurrentIndexes([]);
+// };
+// const selectionSort = async (
+//   arr: number[],
+//   direction: "По возрастанию" | "По убыванию"
+// ) => {
+//   let n = arr.length;
+//   for (let i = 0; i < n - 1; i++) {
+//     let minIndex = i;
+//     setSortedIndexes((prev) => [...prev, i]);
+//     for (let j = i + 1; j < n; j++) {
+//       setCurrentIndexes([minIndex, j]);
+//       await delay(DELAY_IN_MS);
+//       if (
+//         direction === "По возрастанию"
+//           ? arr[j] < arr[minIndex]
+//           : arr[j] > arr[minIndex]
+//       ) {
+//         minIndex = j;
+//       }
+//     }
+//     if (minIndex !== i) {
+//       [arr[i], arr[minIndex]] = [arr[minIndex], arr[i]];
+//       setArray([...arr]);
+//       setSortedIndexes((prev) => [...prev, i]);
+//     } else {
+//       setSortedIndexes((prev) => [...prev, i]);
+//     }
+//   }
+//   setCurrentIndexes([]);
+//   setSortedIndexes(Array.from(Array(n).keys()));
+// };

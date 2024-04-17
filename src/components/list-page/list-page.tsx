@@ -43,7 +43,7 @@ export const ListPage: React.FC = () => {
   };
 
   useEffect(() => {
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 5; i++) {
       list.append(randomStarterContent());
     }
     updateListDisplay();
@@ -241,6 +241,7 @@ export const ListPage: React.FC = () => {
         <div className={style.head_container}>
           <div className={style.input_container}>
             <Input
+              data-testid="list-value-input"
               type="text"
               maxLength={4}
               value={inputValue}
@@ -250,6 +251,7 @@ export const ListPage: React.FC = () => {
           </div>
           <div className={style.button_container}>
             <Button
+              data-testid="list-add-head"
               extraClass={style.button_font}
               onClick={handleAddToHead}
               linkedList="small"
@@ -258,6 +260,7 @@ export const ListPage: React.FC = () => {
               text="Добавить в Head"
             />
             <Button
+              data-testid="list-add-tail"
               extraClass={style.button_font}
               onClick={handleAddToTail}
               linkedList="small"
@@ -266,6 +269,7 @@ export const ListPage: React.FC = () => {
               text="Добавить в Tail"
             />
             <Button
+              data-testid="list-delete-head"
               extraClass={style.button_font}
               onClick={hadnleDeleteFromHead}
               disabled={currentAction !== ""}
@@ -274,6 +278,7 @@ export const ListPage: React.FC = () => {
               text="Удалить из Head"
             />
             <Button
+              data-testid="list-delete-tail"
               extraClass={style.button_font}
               onClick={handleDeleteFromTail}
               disabled={currentAction !== ""}
@@ -286,6 +291,7 @@ export const ListPage: React.FC = () => {
         <div className={style.index_container}>
           <div className={style.input_container}>
             <Input
+              data-testid="list-index-input"
               type="number"
               isLimitText={false}
               onChange={handleIndexInputData}
@@ -294,6 +300,7 @@ export const ListPage: React.FC = () => {
           </div>
           <div className={style.button_container}>
             <Button
+              data-testid="list-index-add"
               extraClass={style.button_font}
               linkedList="big"
               onClick={handleAddAtIndex}
@@ -307,6 +314,7 @@ export const ListPage: React.FC = () => {
               text="Добавить по индексу"
             ></Button>
             <Button
+              data-testid="list-index-delete"
               extraClass={style.button_font}
               linkedList="big"
               onClick={handleDeleteAtIndex}
