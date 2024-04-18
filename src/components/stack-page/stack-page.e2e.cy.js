@@ -7,7 +7,7 @@
 // Добавьте в стек несколько элементов, по нажатию на кнопку «Очистить» длина стека должна быть равна 0.
 
 import { SHORT_DELAY_IN_MS } from "../../constants/delays";
-import {circle, addElement } from '../../../cypress/constants'
+import {circle } from '../../../cypress/constants'
 
 const input = '[data-testid=stack-input]';
 const buttonAdd = '[data-testid=stack-add]'
@@ -17,7 +17,7 @@ const buttonClear = '[data-testid=stack-clear]';
 
 describe('Stack-page component', () => {
     beforeEach(() => {
-        cy.visit("http://localhost:3000/stack")
+        cy.visit("stack")
     });
     it('add button should be disable with empty input', () => {
         cy.get(input).should('be.visible');
@@ -52,11 +52,11 @@ describe('Stack-page component', () => {
     });
 
     it('clear button works correctly', () => {
-        addElement('h', buttonAdd, input, true);
-        addElement('e', buttonAdd, input, true);
-        addElement('l', buttonAdd, input, true);
-        addElement('l', buttonAdd, input, true);
-        addElement('o', buttonAdd, input, true);
+        cy.addElement('h', buttonAdd, input, true);
+        cy.addElement('e', buttonAdd, input, true);
+        cy.addElement('l', buttonAdd, input, true);
+        cy.addElement('l', buttonAdd, input, true);
+        cy.addElement('o', buttonAdd, input, true);
         cy.get(circle).should('have.length', 5);
         cy.get(buttonClear).click();
         cy.get(circle).should('have.length', 0);

@@ -7,7 +7,7 @@ const button = '[data-testid=reverse-button]'
 
 describe("String Component", () => {
   beforeEach(() => {
-    cy.visit("http://localhost:3000/recursion");
+    cy.visit("recursion");
   });
 
   it("button should be disabled whith empty input", () => {

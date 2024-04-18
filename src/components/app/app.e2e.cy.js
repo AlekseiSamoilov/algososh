@@ -1,31 +1,31 @@
 
 describe("Application start", () => {
   it("Application success started", () => {
-    cy.visit("http://localhost:3000");
+    cy.visit('');
     cy.contains("МБОУ АЛГОСОШ");
   });
   it("Routing to recursion page work", () => {
-    cy.visit('http://localhost:3000/recursion');
+    cy.visit('recursion');
     cy.contains('Строка');
   });
   it("Routing to fibonacci page work", () => {
-    cy.visit('http://localhost:3000/fibonacci');
+    cy.visit('fibonacci');
     cy.contains('Последовательность Фибоначчи');
   });
   it("Routing to sorting page work", () => {
-    cy.visit('http://localhost:3000/sorting');
+    cy.visit('sorting');
     cy.contains('Сортировка массива');
   });
   it("Routing to stack page work", () => {
-    cy.visit('http://localhost:3000/stack');
+    cy.visit('stack');
     cy.contains('Стек');
   });
   it("Routing to queue page work", () => {
-    cy.visit('http://localhost:3000/queue');
+    cy.visit('queue');
     cy.contains('Очередь');
   });
   it("Routing to linked-list page work", () => {
-    cy.visit('http://localhost:3000/list');
+    cy.visit('list');
     cy.contains('Связный список');
     cy.contains('Добавить в Head');
   });

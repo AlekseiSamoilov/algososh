@@ -7,7 +7,7 @@ const button = '[data-testid=fibo-button]';
 
 describe('Fibonacci component', () => {
   beforeEach(() => {
-    cy.visit("http://localhost:3000/fibonacci");
+    cy.visit("fibonacci");
   })
   it('button should be disabled with empty input', () => {
     cy.get(input).should('be.visible');
@@ -21,7 +21,7 @@ describe('Fibonacci component', () => {
   });
 
   it('correctly calculate fibonacci number', () => {
-    addElement('3', button, input, true)
+    cy.addElement('3', button, input, true)
     cy.get(circle).should('have.length', 3);
     cy.wait(2000)
     cy.get(circle).eq(0).should('contain', '1'); 
