@@ -8,7 +8,7 @@ import { Button } from "../ui/button/button";
 import { Input } from "../ui/input/input";
 import { Circle } from "../ui/circle/circle";
 import Queue from "../data-structures/Queue";
-import { SHORT_DELAY_IN_MS } from "../../constants/delays";
+import { DELAY_IN_MS, SHORT_DELAY_IN_MS } from "../../constants/delays";
 import { delay } from "../../constants/delays";
 
 const startingQueue = 6;
@@ -88,10 +88,11 @@ export const QueuePage: React.FC = () => {
   const handleClearQueue = async () => {
     setActiveButton("clear");
     queueRef.current.clear();
-    await delay(SHORT_DELAY_IN_MS);
+    await delay(DELAY_IN_MS);
     setQueue(Array(startingQueue).fill(emptyCircles));
     setEmptyQueue(true);
     setActiveButton(null);
+    console.log("Clearing queue:", queueRef.current.getItems());
   };
 
   return (
@@ -100,6 +101,7 @@ export const QueuePage: React.FC = () => {
         <div className={style.stack_container}>
           <div className={style.input_container}>
             <Input
+              data-testid="queue-input"
               type="text"
               maxLength={4}
               isLimitText={true}
@@ -107,6 +109,7 @@ export const QueuePage: React.FC = () => {
               onChange={inputData}
             />
             <Button
+              data-testid="queue-add"
               text="Добавить"
               type="button"
               onClick={handleAddChar}
@@ -118,6 +121,7 @@ export const QueuePage: React.FC = () => {
               isLoader={activeButton === "add"}
             />
             <Button
+              data-testid="queue-delete"
               text="Удалить"
               type="button"
               onClick={handleRemoveChar}
@@ -129,6 +133,7 @@ export const QueuePage: React.FC = () => {
           </div>
           <div className={style.clear_button}>
             <Button
+              data-testid="queue-clear"
               text="Очистить"
               type="button"
               onClick={handleClearQueue}

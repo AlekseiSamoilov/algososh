@@ -25,4 +25,5 @@
 .array_container {
     display: flex;
     align-items: flex-end;
+    gap: 10px;
 }

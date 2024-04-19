@@ -54,6 +54,7 @@ export const FibonacciPage: React.FC = () => {
         <div className={style.input_display}>
           <div className={style.input_container}>
             <Input
+              data-testid="fibo-input"
               type="number"
               max={19}
               isLimitText={true}
@@ -62,6 +63,7 @@ export const FibonacciPage: React.FC = () => {
             />
           </div>
           <Button
+            data-testid="fibo-button"
             text="Рассчитать"
             type="button"
             onClick={calculateFibonacci}
